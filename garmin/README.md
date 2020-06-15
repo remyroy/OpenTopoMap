@@ -12,6 +12,7 @@ cd OpenTopoMap/garmin
 
 Download [mkgmap](http://www.mkgmap.org.uk/download/mkgmap.html),
 [splitter](http://www.mkgmap.org.uk/download/splitter.html) & bounds
+Download [phyghtmap](http://katze.tfiu.de/projects/phyghtmap/)
 
 ```bash
 MKGMAP="mkgmap-r4546" # adjust to latest version (see www.mkgmap.org.uk)
@@ -45,7 +46,7 @@ fi
 
 BOUNDS="$(pwd)/bounds"
 
-if stat --printf='' sea/sea_*.pbf 2> /dev/null; then
+if stat --printf='' sea/sea/sea_*.pbf 2> /dev/null; then
     echo "sea already downloaded"
 else
     echo "downloading sea"
@@ -60,33 +61,98 @@ SEA="$(pwd)/sea/sea"
 ## Fetch map data, split & build garmin map
 
 ```bash
+REMOTEPBF=vermont-latest.osm.pbf
+REMOTEPOLY=vermont.poly
+REMOTEROOT=https://download.geofabrik.de/north-america/us/
+REMOTEPBFURL=$REMOTEROOT$REMOTEPBF
+REMOTEPOLYURL=$REMOTEROOT$REMOTEPOLY
+MAPDESCRIPTION="Vermont"
+UNIQUEID=0001
+OUTFILENAME=osm-vermont.img
+COUTFILENAME=osm-vermont-contour.img
+
 mkdir data
 pushd data > /dev/null
 
-rm -f vermont-latest.osm.pbf
-wget "https://download.geofabrik.de/north-america/us/vermont-latest.osm.pbf"
+## Get OSM data
+
+rm -f $REMOTEPBF
+wget "$REMOTEPBFURL"
+
+## Split map
 
 rm -f 6324*.pbf
-java -jar $SPLITTERJAR --precomp-sea=$SEA "$(pwd)/vermont-latest.osm.pbf"
+java -Xmx4g -jar $SPLITTERJAR \
+    --precomp-sea=$SEA \
+    "$(pwd)/${REMOTEPBF}"
 DATA="$(pwd)/6324*.pbf"
+
+## Get poly file
+
+rm -f $REMOTEPOLY
+wget "$REMOTEPOLYURL"
+
+## Get contour/SRTM data
+
+rm -f phyghtmap-out*.pbf
+phyghtmap --polygon=$REMOTEPOLY -j 16 -s 10 -0 \
+    --source=view3 \
+    --max-nodes-per-tile=0 --max-nodes-per-way=0 --pbf -o phyghtmap-out
+PHYGHTMAPPBF=`find . -type f -name "phyghtmap-out*" -print`
+
+DEMPATH="$(pwd)/hgt/VIEW3"
+
+## Split contour
+
+rm -f 5324*.pbf
+java -Xmx4g -jar $SPLITTERJAR \
+    --precomp-sea=$SEA \
+    --mapid=53240001 \
+    --polygon-file=$REMOTEPOLY \
+    $PHYGHTMAPPBF
+CDATA="$(pwd)/5324*.pbf"
 
 popd > /dev/null
 
 OPTIONS="$(pwd)/mkgmap_options"
 STYLEFILE="$(pwd)/style/opentopomap"
+COPTIONS="$(pwd)/contours_options"
+CSTYLEFILE="$(pwd)/style/contours"
 
 pushd style/typ > /dev/null
+
+## Create typ file
 
 java -jar $MKGMAPJAR --family-id=35 OpenTopoMap.txt
 TYPFILE="$(pwd)/OpenTopoMap.typ"
 
+## Create contour typ
+
+java -jar $MKGMAPJAR --family-id=36 contours.txt
+CTYPFILE="$(pwd)/contours.typ"
+
 popd > /dev/null
 
-java -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
+## Create Garmin map
+
+java -Xmx4g -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --precomp-sea=$SEA \
+    --description="$MAPDESCRIPTION - OSM" \
+    --series-name="$MAPDESCRIPTION - OTM" \
+    --mapname=5135${UNIQUEID} \
+    --dem=$DEMPATH \
     --output-dir=output --bounds=$BOUNDS $DATA $TYPFILE
 
-# optional: give map a useful name:
-mv output/gmapsupp.img output/vermont.img
+mv output/gmapsupp.img output/$OUTFILENAME
+
+## Create Garming contours map
+
+java -Xmx4g -jar $MKGMAPJAR -c $COPTIONS --style-file=$CSTYLEFILE \
+    --description="$MAPDESCRIPTION - OTM - Contours" \
+    --series-name="$MAPDESCRIPTION - OTM - Contours" \
+    --mapname=5136${UNIQUEID} \
+    --output-dir=output $CDATA $CTYPFILE
+
+mv output/gmapsupp.img output/$COUTFILENAME
 
 ```
