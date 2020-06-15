@@ -87,6 +87,6 @@ java -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --output-dir=output --bounds=$BOUNDS $DATA $TYPFILE
 
 # optional: give map a useful name:
-mv output/gmapsupp.img output/morocco.img
+mv output/gmapsupp.img output/vermont.img
 
 ```
