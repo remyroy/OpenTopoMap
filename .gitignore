@@ -1,1 +1,11 @@
 mapnik/tools/saddledirection
+garmin/tools/
+garmin/bounds*.zip
+garmin/sea*.zip
+garmin/bounds/
+garmin/sea/
+garmin/data/
+garmin/output/
+garmin/style/typ/osmmap.img
+garmin/style/typ/osmmap.tdb
+garmin/style/typ/xOpenTopoMap.typ

@@ -14,8 +14,8 @@ Download [mkgmap](http://www.mkgmap.org.uk/download/mkgmap.html),
 [splitter](http://www.mkgmap.org.uk/download/splitter.html) & bounds
 
 ```bash
-MKGMAP="mkgmap-r4136" # adjust to latest version (see www.mkgmap.org.uk)
-SPLITTER="splitter-r591"
+MKGMAP="mkgmap-r4546" # adjust to latest version (see www.mkgmap.org.uk)
+SPLITTER="splitter-r597"
 
 mkdir tools
 pushd tools > /dev/null
@@ -39,8 +39,8 @@ if stat --printf='' bounds/bounds_*.bnd 2> /dev/null; then
 else
     echo "downloading bounds"
     rm -f bounds.zip  # just in case
-    wget "http://osm2.pleiades.uni-wuppertal.de/bounds/latest/bounds.zip"
-    unzip "bounds.zip" -d bounds
+    wget "http://osm.thkukuk.de/data/bounds-latest.zip"
+    unzip "bounds-latest.zip" -d bounds
 fi
 
 BOUNDS="$(pwd)/bounds"
@@ -50,11 +50,11 @@ if stat --printf='' sea/sea_*.pbf 2> /dev/null; then
 else
     echo "downloading sea"
     rm -f sea.zip  # just in case
-    wget "http://osm2.pleiades.uni-wuppertal.de/sea/latest/sea.zip"
-    unzip "sea.zip" -d sea
+    wget "http://osm.thkukuk.de/data/sea-latest.zip"
+    unzip "sea-latest.zip" -d sea
 fi
 
-SEA="$(pwd)/sea"
+SEA="$(pwd)/sea/sea"
 ```
 
 ## Fetch map data, split & build garmin map
@@ -63,16 +63,16 @@ SEA="$(pwd)/sea"
 mkdir data
 pushd data > /dev/null
 
-rm -f morocco-latest.osm.pbf
-wget "https://download.geofabrik.de/africa/morocco-latest.osm.pbf"
+rm -f vermont-latest.osm.pbf
+wget "https://download.geofabrik.de/north-america/us/vermont-latest.osm.pbf"
 
 rm -f 6324*.pbf
-java -jar $SPLITTERJAR --precomp-sea=$SEA "$(pwd)/morocco-latest.osm.pbf"
+java -jar $SPLITTERJAR --precomp-sea=$SEA "$(pwd)/vermont-latest.osm.pbf"
 DATA="$(pwd)/6324*.pbf"
 
 popd > /dev/null
 
-OPTIONS="$(pwd)/opentopomap_options"
+OPTIONS="$(pwd)/mkgmap_options"
 STYLEFILE="$(pwd)/style/opentopomap"
 
 pushd style/typ > /dev/null
