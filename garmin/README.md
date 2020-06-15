@@ -138,7 +138,7 @@ popd > /dev/null
 java -Xmx4g -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --precomp-sea=$SEA \
     --description="$MAPDESCRIPTION - OSM" \
-    --series-name="$MAPDESCRIPTION - OTM" \
+    --series-name="$MAPDESCRIPTION - OSM" \
     --mapname=5135${UNIQUEID} \
     --dem=$DEMPATH \
     --output-dir=output --bounds=$BOUNDS $DATA $TYPFILE
@@ -148,8 +148,8 @@ mv output/gmapsupp.img output/$OUTFILENAME
 ## Create Garming contours map
 
 java -Xmx4g -jar $MKGMAPJAR -c $COPTIONS --style-file=$CSTYLEFILE \
-    --description="$MAPDESCRIPTION - OTM - Contours" \
-    --series-name="$MAPDESCRIPTION - OTM - Contours" \
+    --description="$MAPDESCRIPTION - OSM - Contours" \
+    --series-name="$MAPDESCRIPTION - OSM - Contours" \
     --mapname=5136${UNIQUEID} \
     --output-dir=output $CDATA $CTYPFILE
 
