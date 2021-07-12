@@ -15,8 +15,8 @@ Download [mkgmap](http://www.mkgmap.org.uk/download/mkgmap.html),
 Download [phyghtmap](http://katze.tfiu.de/projects/phyghtmap/)
 
 ```bash
-MKGMAP="mkgmap-r4546" # adjust to latest version (see www.mkgmap.org.uk)
-SPLITTER="splitter-r597"
+MKGMAP="mkgmap-r4802" # adjust to latest version (see www.mkgmap.org.uk)
+SPLITTER="splitter-r615"
 
 mkdir tools
 pushd tools > /dev/null
@@ -82,7 +82,7 @@ wget "$REMOTEPBFURL"
 ## Split map
 
 rm -f 6324*.pbf
-java -Xmx4g -jar $SPLITTERJAR \
+java -Xmx8g -jar $SPLITTERJAR \
     --precomp-sea=$SEA \
     "$(pwd)/${REMOTEPBF}"
 DATA="$(pwd)/6324*.pbf"
@@ -105,7 +105,7 @@ DEMPATH="$(pwd)/hgt/VIEW3"
 ## Split contour
 
 rm -f 5324*.pbf
-java -Xmx4g -jar $SPLITTERJAR \
+java -Xmx8g -jar $SPLITTERJAR \
     --precomp-sea=$SEA \
     --mapid=53240001 \
     --polygon-file=$REMOTEPOLY \
@@ -114,7 +114,7 @@ CDATA="$(pwd)/5324*.pbf"
 
 popd > /dev/null
 
-OPTIONS="$(pwd)/mkgmap_options"
+OPTIONS="$(pwd)/opentopomap_options"
 STYLEFILE="$(pwd)/style/opentopomap"
 COPTIONS="$(pwd)/contours_options"
 CSTYLEFILE="$(pwd)/style/contours"
@@ -123,8 +123,8 @@ pushd style/typ > /dev/null
 
 ## Create typ file
 
-java -jar $MKGMAPJAR --family-id=35 OpenTopoMap.txt
-TYPFILE="$(pwd)/OpenTopoMap.typ"
+java -jar $MKGMAPJAR --family-id=35 opentopomap.txt
+TYPFILE="$(pwd)/opentopomap.typ"
 
 ## Create contour typ
 
@@ -135,7 +135,7 @@ popd > /dev/null
 
 ## Create Garmin map
 
-java -Xmx4g -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
+java -Xmx8g -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --precomp-sea=$SEA \
     --description="$MAPDESCRIPTION - OSM" \
     --series-name="$MAPDESCRIPTION - OSM" \
@@ -147,7 +147,7 @@ mv output/gmapsupp.img output/$OUTFILENAME
 
 ## Create Garming contours map
 
-java -Xmx4g -jar $MKGMAPJAR -c $COPTIONS --style-file=$CSTYLEFILE \
+java -Xmx8g -jar $MKGMAPJAR -c $COPTIONS --style-file=$CSTYLEFILE \
     --description="$MAPDESCRIPTION - OSM - Contours" \
     --series-name="$MAPDESCRIPTION - OSM - Contours" \
     --mapname=5136${UNIQUEID} \
