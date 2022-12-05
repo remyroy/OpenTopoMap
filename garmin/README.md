@@ -15,8 +15,8 @@ Download [mkgmap](http://www.mkgmap.org.uk/download/mkgmap.html),
 Download [phyghtmap](http://katze.tfiu.de/projects/phyghtmap/)
 
 ```bash
-MKGMAP="mkgmap-r4802" # adjust to latest version (see www.mkgmap.org.uk)
-SPLITTER="splitter-r615"
+MKGMAP="mkgmap-r4905" # adjust to latest version (see www.mkgmap.org.uk)
+SPLITTER="splitter-r652"
 
 mkdir tools
 pushd tools > /dev/null
@@ -61,15 +61,15 @@ SEA="$(pwd)/sea/sea"
 ## Fetch map data, split & build garmin map
 
 ```bash
-REMOTEPBF=vermont-latest.osm.pbf
-REMOTEPOLY=vermont.poly
-REMOTEROOT=https://download.geofabrik.de/north-america/us/
+REMOTEPBF=quebec-latest.osm.pbf
+REMOTEPOLY=quebec.poly
+REMOTEROOT=http://download.geofabrik.de/north-america/canada/
 REMOTEPBFURL=$REMOTEROOT$REMOTEPBF
 REMOTEPOLYURL=$REMOTEROOT$REMOTEPOLY
-MAPDESCRIPTION="Vermont"
-UNIQUEID=0001
-OUTFILENAME=osm-vermont.img
-COUTFILENAME=osm-vermont-contour.img
+MAPDESCRIPTION="Quebec"
+UNIQUEID=0921
+OUTFILENAME=osm-quebec.img
+COUTFILENAME=osm-quebec-contour.img
 
 mkdir data
 pushd data > /dev/null
@@ -141,6 +141,7 @@ java -Xmx8g -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --series-name="$MAPDESCRIPTION - OSM" \
     --mapname=5135${UNIQUEID} \
     --dem=$DEMPATH \
+    --nsis \
     --output-dir=output --bounds=$BOUNDS $DATA $TYPFILE
 
 mv output/gmapsupp.img output/$OUTFILENAME
