@@ -137,11 +137,14 @@ popd > /dev/null
 
 java -Xmx8g -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --precomp-sea=$SEA \
-    --description="$MAPDESCRIPTION - OSM" \
-    --series-name="$MAPDESCRIPTION - OSM" \
+    --description="$MAPDESCRIPTION - OSM $(date +'%d-%m-%Y')" \
+    --series-name="$MAPDESCRIPTION - OSM $(date +'%d-%m-%Y')" \
     --mapname=5135${UNIQUEID} \
     --dem=$DEMPATH \
     --nsis \
+    --product-id=${UNIQUEID} \
+    --family-id=35 \
+    --family-name="$MAPDESCRIPTION - OSM $(date +'%d-%m-%Y')" \
     --output-dir=output --bounds=$BOUNDS $DATA $TYPFILE
 
 mv output/gmapsupp.img output/$OUTFILENAME
@@ -149,8 +152,8 @@ mv output/gmapsupp.img output/$OUTFILENAME
 ## Create Garming contours map
 
 java -Xmx8g -jar $MKGMAPJAR -c $COPTIONS --style-file=$CSTYLEFILE \
-    --description="$MAPDESCRIPTION - OSM - Contours" \
-    --series-name="$MAPDESCRIPTION - OSM - Contours" \
+    --description="$MAPDESCRIPTION - OSM - Contours $(date +'%d-%m-%Y')" \
+    --series-name="$MAPDESCRIPTION - OSM - Contours $(date +'%d-%m-%Y')" \
     --mapname=5136${UNIQUEID} \
     --output-dir=output $CDATA $CTYPFILE
 
