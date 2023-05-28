@@ -15,8 +15,8 @@ Download [mkgmap](http://www.mkgmap.org.uk/download/mkgmap.html),
 Download [phyghtmap](http://katze.tfiu.de/projects/phyghtmap/)
 
 ```bash
-MKGMAP="mkgmap-r4905" # adjust to latest version (see www.mkgmap.org.uk)
-SPLITTER="splitter-r652"
+MKGMAP="mkgmap-r4907" # adjust to latest version (see www.mkgmap.org.uk)
+SPLITTER="splitter-r653"
 
 mkdir tools
 pushd tools > /dev/null
