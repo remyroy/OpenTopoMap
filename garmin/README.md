@@ -159,4 +159,6 @@ java -Xmx8g -jar $MKGMAPJAR -c $COPTIONS --style-file=$CSTYLEFILE \
 
 mv output/gmapsupp.img output/$COUTFILENAME
 
+cp style/typ/xopentopomap.typ output/xopentopomap.typ
+
 ```
