@@ -69,6 +69,7 @@ REMOTEPOLYURL=$REMOTEROOT$REMOTEPOLY
 MAPDESCRIPTION="Quebec"
 UNIQUEID=8000
 FAMILYID=8000
+CFAMILYID=8100
 OUTFILENAME=osm-quebec.img
 COUTFILENAME=osm-quebec-contour.img
 
@@ -124,12 +125,12 @@ pushd style/typ > /dev/null
 
 ## Create typ file
 
-java -jar $MKGMAPJAR --family-id=35 opentopomap.txt
+java -jar $MKGMAPJAR --family-id=${FAMILYID} opentopomap.txt
 TYPFILE="$(pwd)/opentopomap.typ"
 
 ## Create contour typ
 
-java -jar $MKGMAPJAR --family-id=36 contours.txt
+java -jar $MKGMAPJAR --family-id=${CFAMILYID} contours.txt
 CTYPFILE="$(pwd)/contours.typ"
 
 popd > /dev/null
