@@ -67,7 +67,8 @@ REMOTEROOT=http://download.geofabrik.de/north-america/canada/
 REMOTEPBFURL=$REMOTEROOT$REMOTEPBF
 REMOTEPOLYURL=$REMOTEROOT$REMOTEPOLY
 MAPDESCRIPTION="Quebec"
-UNIQUEID=0921
+UNIQUEID=8000
+FAMILYID=8000
 OUTFILENAME=osm-quebec.img
 COUTFILENAME=osm-quebec-contour.img
 
@@ -143,7 +144,7 @@ java -Xmx8g -jar $MKGMAPJAR -c $OPTIONS --style-file=$STYLEFILE \
     --dem=$DEMPATH \
     --nsis \
     --product-id=${UNIQUEID} \
-    --family-id=35 \
+    --family-id=${FAMILYID} \
     --family-name="$MAPDESCRIPTION - OSM $(date +'%d-%m-%Y')" \
     --output-dir=output --bounds=$BOUNDS $DATA $TYPFILE
 

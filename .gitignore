@@ -10,3 +10,7 @@ garmin/style/typ/osmmap.img
 garmin/style/typ/osmmap.tdb
 garmin/style/typ/xOpenTopoMap.typ
 garmin/style/typ/xcontours.typ
+
+garmin/style/typ/contours.typ
+garmin/style/typ/opentopomap.typ
+garmin/style/typ/xopentopomap.typ
